@@ -6,8 +6,8 @@ services:
     restart: always
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: admin@1234
-      POSTGRES_DB: bank1
+      POSTGRES_PASSWORD: admin@123
+      POSTGRES_DB: bank
     ports:
       - "5432:5432"
 
@@ -20,4 +20,4 @@ services:
       - "3000:3000"
     environment:
       - DATABASE_URL=postgresql://postgres:admin@123@postgres:5432/bank?schema=public
-    command: ["npm", "run", "start"]
+    command: ["dockerize", "-wait", "tcp://postgres:5432", "-timeout", "60s", "npm", "run", "migrate-and-start"]
