@@ -1,0 +1,23 @@
+version: "3.8"
+services:
+  postgres:
+    image: postgres:latest
+    container_name: bank-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin@1234
+      POSTGRES_DB: bank1
+    ports:
+      - "5432:5432"
+
+  app:
+    build: .
+    container_name: bank-app
+    depends_on:
+      - postgres
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:admin@123@postgres:5432/bank?schema=public
+    command: ["npm", "run", "start"]
